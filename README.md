@@ -24,14 +24,13 @@ This repository includes an MCP (Model Context Protocol) server that enables AI 
 to interact with the oscilloscope. The server exposes 28 tools for device discovery,
 channel configuration, timebase/trigger control, and waveform acquisition.
 
-### Quick Start
+### Setup
+
+First, install the dependencies:
 
 ```bash
 pip install fastmcp pymso5000-tspspi pylabdevs-tspspi
-python3 mcp_mso5000.py
 ```
-
-### Configuration
 
 The server auto-discovers the oscilloscope on the network. You can optionally
 set a static IP via environment variable if preferred:
@@ -41,6 +40,8 @@ export RIGOL_MSO5000_IP=10.0.0.123   # optional, auto-discovers if not set
 export RIGOL_MSO5000_PORT=5555        # optional, defaults to 5555
 ```
 
+Then add the MCP server to your editor/agent:
+
 #### Claude Code
 
 ```bash
@@ -49,7 +50,7 @@ claude mcp add rigol-mso5000 -- python3 /path/to/mcp_mso5000.py
 
 #### Cursor IDE
 
-Add to `~/.cursor/mcp.json`:
+Add the following to `~/.cursor/mcp.json`:
 
 ```json
 {
