@@ -8,3 +8,30 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools-git-versioning]
 enabled = true
+
+[project]
+name = "pymso5000-mcp"
+version = "0.1.0"
+description = "MCP Server for the Rigol MSO5000 Oscilloscope"
+readme = "README.md"
+license = {text = "BSD"}
+requires-python = ">=3.8"
+authors = [
+    {name = "amahpour"}
+]
+keywords = ["rigol", "mso5000", "oscilloscope", "mcp", "scpi"]
+dependencies = [
+    "pymso5000-tspspi>=0.0.1",
+    "pylabdevs-tspspi>=0.0.11",
+    "fastmcp>=2.10.6",
+]
+
+[project.scripts]
+mso5000-mcp = "mcp_mso5000:main"
+
+[tool.setuptools]
+py-modules = ["mcp_mso5000", "find_mso5000"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pymso5000*"]

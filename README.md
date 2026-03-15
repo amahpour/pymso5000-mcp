@@ -10,12 +10,82 @@ exposes the public interface.
 
 Patches for raw mode sample query by [MasterJubei](https://github.com/MasterJubei)
 
-## Installing 
+## Installing
 
 There is a PyPi package that can be installed using
 
 ```
 pip install pymso5000-tspspi
+```
+
+## MCP Server
+
+This repository includes an MCP (Model Context Protocol) server that enables AI agents
+to interact with the oscilloscope. The server exposes 28 tools for device discovery,
+channel configuration, timebase/trigger control, and waveform acquisition.
+
+### Quick Start
+
+```bash
+pip install fastmcp pymso5000-tspspi pylabdevs-tspspi
+python3 mcp_mso5000.py
+```
+
+### Configuration
+
+The server auto-discovers the oscilloscope on the network. You can optionally
+set a static IP via environment variable if preferred:
+
+```bash
+export RIGOL_MSO5000_IP=10.0.0.123   # optional, auto-discovers if not set
+export RIGOL_MSO5000_PORT=5555        # optional, defaults to 5555
+```
+
+#### Claude Code
+
+```bash
+claude mcp add rigol-mso5000 -- python3 /path/to/mcp_mso5000.py
+```
+
+#### Cursor IDE
+
+Add to `~/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "rigol-mso5000": {
+      "command": "python3",
+      "args": ["/path/to/mcp_mso5000.py"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Available MCP Tools
+
+| Category | Tools |
+|---|---|
+| Health & Discovery | `ping`, `discover_devices` |
+| Connection | `test_connection`, `connect`, `disconnect`, `get_device_info` |
+| Channel Config | `set_channel_enable`, `get_channel_enable`, `set_channel_coupling`, `get_channel_coupling`, `set_channel_scale`, `get_channel_scale`, `set_channel_probe_ratio`, `get_channel_probe_ratio` |
+| Timebase | `set_timebase_mode`, `get_timebase_mode`, `set_timebase_scale`, `get_timebase_scale` |
+| Trigger | `set_trigger_mode`, `get_trigger_mode`, `set_sweep_mode`, `get_sweep_mode`, `force_trigger` |
+| Run Control | `set_run_mode`, `get_run_mode` |
+| Waveform | `query_waveform` (saves CSV, returns file path), `query_waveform_summary` (inline stats) |
+| Status | `get_full_scope_status` (all config in one call) |
+
+Waveform data is saved to CSV files in the `waveform_data/` directory because the
+data can be very large (thousands of points). The file path is returned so the agent
+can read or copy the file.
+
+### Network Discovery
+
+To find your oscilloscope on the network:
+
+```bash
+python3 find_mso5000.py
 ```
 
 ## Simple example to fetch waveforms:
@@ -115,4 +185,3 @@ functions (currently no plot, only stored in the npz) and execute manually assis
 differential scans.
 
 Help for this utility is available via ```mso5000fetch --help```
-

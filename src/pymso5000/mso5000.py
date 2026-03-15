@@ -157,7 +157,7 @@ class MSO5000(Oscilloscope):
             raise ValueError(f"Unknown sweep mode {mode} passed")
 
     def _get_sweep_mode(self):
-        resp = self._scpi.scpiCommand(":TRIG:SWE?")
+        resp = self._scpi.scpiQuery(":TRIG:SWE?")
 
         modes = {
             "NORM" : OscilloscopeSweepMode.NORMAL,
