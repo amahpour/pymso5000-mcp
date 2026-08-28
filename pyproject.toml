@@ -15,7 +15,7 @@ version = "0.1.0"
 description = "MCP Server for the Rigol MSO5000 Oscilloscope"
 readme = "README.md"
 license = {text = "BSD"}
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [
     {name = "amahpour"}
 ]
